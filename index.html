@@ -1,0 +1,973 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moor End Academy | Year 8 AI Benefits and Risks</title>
+  <style>
+    :root {
+      --red: #b00000;
+      --dark-red: #740000;
+      --black: #101010;
+      --ink: #202020;
+      --muted: #666;
+      --line: #d9d9d9;
+      --soft: #f7f7f7;
+      --red-soft: #fdeaea;
+      --white: #fff;
+      --green: #157347;
+      --amber: #9a6700;
+      --radius: 8px;
+      --shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.45;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--black), var(--dark-red));
+      color: var(--white);
+      padding: 22px clamp(16px, 4vw, 44px);
+      border-bottom: 5px solid var(--red);
+    }
+
+    .school {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    h1 {
+      margin: 8px 0 4px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px clamp(12px, 3vw, 32px);
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    button, .nav-link {
+      border: 1px solid var(--black);
+      background: var(--white);
+      color: var(--black);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 40px;
+      transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+      text-decoration: none;
+    }
+
+    button:hover, .nav-link:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    button.primary {
+      background: var(--red);
+      color: var(--white);
+      border-color: var(--red);
+    }
+
+    button.ghost {
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 28px));
+      margin: 22px auto 48px;
+    }
+
+    section {
+      margin: 18px 0;
+      padding: clamp(16px, 3vw, 28px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      color: var(--red);
+      font-size: clamp(1.35rem, 2.6vw, 2rem);
+    }
+
+    h3 {
+      margin: 18px 0 8px;
+      color: var(--black);
+      font-size: 1.12rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .tile {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--red);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: var(--soft);
+      min-height: 112px;
+    }
+
+    .tile strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .reading {
+      columns: 2 330px;
+      column-gap: 32px;
+      font-size: 1.02rem;
+    }
+
+    .reading p {
+      break-inside: avoid;
+      margin-top: 0;
+    }
+
+    .question {
+      margin: 12px 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--soft);
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      font: inherit;
+      background: var(--white);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .cloze {
+      display: inline-block;
+      max-width: 175px;
+      min-width: 130px;
+      margin: 0 4px 8px;
+      vertical-align: middle;
+    }
+
+    .word-bank {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0 14px;
+    }
+
+    .word {
+      padding: 7px 10px;
+      border-radius: 6px;
+      background: var(--black);
+      color: var(--white);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 210px) 1fr;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0;
+    }
+
+    .scenario {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--red);
+      border-radius: var(--radius);
+      margin: 10px 0;
+    }
+
+    .segmented {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .segmented label {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      background: var(--white);
+      font-weight: 700;
+    }
+
+    .segmented input { margin-right: 6px; }
+
+    .feedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+      font-weight: 700;
+    }
+
+    .feedback.show { display: block; }
+
+    .feedback.good {
+      color: var(--green);
+      background: #e8f4ee;
+      border: 1px solid #aed8c3;
+    }
+
+    .feedback.warn {
+      color: var(--amber);
+      background: #fff5de;
+      border: 1px solid #e5c46d;
+    }
+
+    .answers {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--red-soft);
+      border: 1px solid #efb7b7;
+      border-radius: var(--radius);
+    }
+
+    .answers.visible { display: block; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--black);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    @media (max-width: 720px) {
+      .match-row { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      nav, button { display: none !important; }
+      main { width: 100%; margin: 0; }
+      section { box-shadow: none; page-break-inside: avoid; }
+    }
+
+    section.locked {
+      opacity: 0.48;
+      position: relative;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    section.locked::before {
+      content: attr(data-lock-message);
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--black);
+      font-weight: 800;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      border-radius: var(--radius);
+    }
+
+    .nav-link.locked-link {
+      opacity: 0.45;
+      border-color: var(--line);
+      pointer-events: auto;
+    }
+
+    .hidden-until-complete {
+      display: none !important;
+    }
+
+    .progress-wrap { display: none; }
+
+    @media (max-width: 640px) {
+      .progress-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    .nav-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--soft);
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .nav-progress-track {
+      width: 94px;
+      height: 8px;
+      border: 1px solid var(--black);
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .nav-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--red), var(--black));
+      transition: width 0.25s ease;
+    }
+</style>
+</head>
+<body>
+  <header>
+    <div class="school">Moor End Academy</div>
+    <h1>The Benefits and Risks of AI</h1>
+  </header>
+
+  <nav aria-label="Lesson navigation">
+    <a class="nav-link" href="#overview">Overview</a>
+    <a class="nav-link" href="#donow">Task 1</a>
+    <a class="nav-link" href="#reading">Task 2</a>
+    <a class="nav-link" href="#cloze">Task 3</a>
+    <a class="nav-link" href="#matching">Task 4</a>
+    <a class="nav-link" href="#activity3">Task 5</a>
+    <a class="nav-link" href="#exit">Task 6</a>
+    <div class="nav-progress" aria-label="Lesson progress"><span id="lessonProgressText">0%</span><div class="nav-progress-track"><div class="nav-progress-fill" id="lessonProgressFill"></div></div></div>
+    <button class="primary" onclick="window.print()">Print</button>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h2>Lesson Overview</h2>
+      <h3>Learning Intention</h3>
+      <p>Understand how AI can help people and organisations, identify realistic risks, and explain how to use AI responsibly.</p>
+      <div class="grid">
+        <div class="tile"><strong>All</strong>Identify examples of AI and sort benefits from risks.</div>
+        <div class="tile"><strong>Most</strong>Explain benefits and risks using evidence from the reading.</div>
+        <div class="tile"><strong>Some</strong>Evaluate a scenario and justify a balanced decision with safeguards.</div>
+        <div class="tile"><strong>Key Words</strong>AI, algorithm, data, bias, privacy, misinformation, automation, hallucination, transparency.</div>
+      </div>
+    </section>
+
+    <section id="donow">
+      <h2>Task 1: Do Now</h2>
+      <p>Choose one answer for each question. You only get one attempt, so check your answers before submitting.</p>
+      <div id="doNow"></div>
+      <button id="doNowButton" onclick="checkDoNow()">Submit Do Now</button>
+      <div class="feedback" id="doNowFeedback"></div>
+      <div class="answers" id="doNowAnswers"></div>
+    </section>
+
+    <section id="reading" data-lock-message="Complete Task 1 before moving on.">
+      <h2>Task 2: Age-Appropriate Reading</h2>
+      <p><span class="badge">Challenge reading</span> Underline one benefit and circle one risk. Then answer the reading check.</p>
+      <div class="reading">
+        <p><strong>Artificial intelligence</strong>, often shortened to AI, is technology that can carry out tasks that normally need human thinking. AI systems can look for patterns in data, make predictions, answer questions, recognise images, translate languages, recommend videos, or help people write and edit. They do this by following algorithms, which are step-by-step instructions or rules. Some AI systems learn from very large sets of data, so the quality of that data matters.</p>
+        <p>AI can bring clear benefits. It can help doctors spot signs of illness, support people with disabilities, translate information quickly, and help workers complete repeated tasks faster. In school, AI tools can suggest quiz questions, explain a difficult idea in a new way, or give feedback on a draft. Used well, AI can save time and help people access information. However, it should support human thinking, not replace it.</p>
+        <p>There are also risks. AI can make mistakes or invent information, which is sometimes called a hallucination. If the data used to train an AI system is unfair or incomplete, the AI may produce biased results. AI tools can also collect personal data, so privacy matters. Another risk is misinformation: realistic fake images, audio, or text can make it harder to know what is true. Responsible AI use means checking sources, protecting private information, being honest when AI has helped, and asking whether the output is fair, accurate and useful.</p>
+      </div>
+
+      <h3>Reading Check</h3>
+      <div id="readingQuestions"></div>
+      <button onclick="checkReading()">Check Reading Answers</button>
+      <button id="readingRevealButton" class="ghost hidden-until-complete" onclick="toggleAnswers('readingAnswers')">Reveal Suggested Answers</button>
+      <div class="feedback" id="readingFeedback"></div>
+      <div class="answers" id="readingAnswers">
+        <ol>
+          <li>Artificial intelligence.</li>
+          <li>Examples: recognising images, translating languages, answering questions, recommending videos, helping write/edit, spotting patterns.</li>
+          <li>Poor, unfair or incomplete data can lead to poor or biased AI outputs.</li>
+          <li>A confident-sounding answer that is wrong or invented.</li>
+          <li>Check sources, protect personal information, be honest about AI help, and check fairness and accuracy.</li>
+        </ol>
+      </div>
+
+      <h3>Supported Reading</h3>
+      <p><span class="badge">Guided reading</span> This shorter version uses the same ideas with simpler sentences.</p>
+      <div class="reading">
+        <p>AI means artificial intelligence. AI is computer technology that can do some tasks that need thinking. It can answer questions, translate words, recommend videos and help people write.</p>
+        <p>AI can be helpful. It can save time, explain hard ideas and help people find information. In school, AI can help with revision or give feedback, but students still need to think for themselves.</p>
+        <p>AI can also be risky. It can make mistakes, give unfair answers, or share false information. Students should protect private information, check facts, and be honest when AI has helped them.</p>
+      </div>
+
+      <h3>Supported Reading Check</h3>
+      <div id="supportReadingQuestions"></div>
+      <button onclick="checkSupportReading()">Check Support Reading</button>
+      <button id="supportReadingRevealButton" class="ghost hidden-until-complete" onclick="toggleAnswers('supportReadingAnswers')">Reveal Suggested Answers</button>
+      <div class="feedback" id="supportReadingFeedback"></div>
+      <div class="answers" id="supportReadingAnswers">
+        <ol>
+          <li>Artificial intelligence.</li>
+          <li>Answer questions, translate words, recommend videos or help people write.</li>
+          <li>It can save time or explain hard ideas.</li>
+          <li>It can make mistakes, be unfair or share false information.</li>
+          <li>Check facts, protect private information and be honest about using AI.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="cloze" data-lock-message="Complete the reading task before moving on.">
+      <h2>Task 3: Fill in the Missing Blanks</h2>
+      <h3>Challenge Version</h3>
+      <p>Use the word bank to complete all 10 missing words.</p>
+      <div class="word-bank">
+        <span class="word">algorithms</span><span class="word">data</span><span class="word">benefits</span><span class="word">hallucination</span>
+        <span class="word">bias</span><span class="word">privacy</span><span class="word">misinformation</span><span class="word">responsible</span>
+        <span class="word">transparency</span><span class="word">automation</span>
+      </div>
+      <p>
+        AI systems use <input class="cloze cloze-challenge" data-answer="algorithms" type="text" />
+        to follow rules and look for patterns in <input class="cloze cloze-challenge" data-answer="data" type="text" />.
+        One of the main <input class="cloze cloze-challenge" data-answer="benefits" type="text" />
+        of AI is that it can save time through <input class="cloze cloze-challenge" data-answer="automation" type="text" />.
+        However, AI can create a <input class="cloze cloze-challenge" data-answer="hallucination" type="text" />,
+        where it sounds confident but gives false information. If training information is unfair, the result may show
+        <input class="cloze cloze-challenge" data-answer="bias" type="text" />.
+        People should protect their <input class="cloze cloze-challenge" data-answer="privacy" type="text" />
+        and avoid sharing personal details. Fake images or stories made with AI can spread
+        <input class="cloze cloze-challenge" data-answer="misinformation" type="text" />.
+        A <input class="cloze cloze-challenge" data-answer="responsible" type="text" />
+        user checks the output, and <input class="cloze cloze-challenge" data-answer="transparency" type="text" />
+        means being clear when AI has helped.
+      </p>
+      <button onclick="checkCloze('challenge')">Check Challenge Blanks</button>
+      <button class="ghost" onclick="resetCloze('challenge')">Reset Challenge</button>
+      <div class="feedback" id="clozeChallengeFeedback"></div>
+
+      <h3>Guided Version</h3>
+      <p>Use the word bank to complete the 7 missing words.</p>
+      <div class="word-bank">
+        <span class="word">AI</span><span class="word">data</span><span class="word">helpful</span><span class="word">mistakes</span>
+        <span class="word">privacy</span><span class="word">bias</span><span class="word">check</span>
+      </div>
+      <p>
+        <input class="cloze cloze-guided" data-answer="ai" type="text" /> means artificial intelligence.
+        AI uses <input class="cloze cloze-guided" data-answer="data" type="text" /> to find patterns.
+        It can be <input class="cloze cloze-guided" data-answer="helpful" type="text" /> because it saves time.
+        AI can also make <input class="cloze cloze-guided" data-answer="mistakes" type="text" />.
+        We should protect our <input class="cloze cloze-guided" data-answer="privacy" type="text" />.
+        If AI is unfair, this may be called <input class="cloze cloze-guided" data-answer="bias" type="text" />.
+        A responsible user should <input class="cloze cloze-guided" data-answer="check" type="text" /> the answer.
+      </p>
+      <button onclick="checkCloze('guided')">Check Guided Blanks</button>
+      <button class="ghost" onclick="resetCloze('guided')">Reset Guided</button>
+      <div class="feedback" id="clozeGuidedFeedback"></div>
+    </section>
+
+    <section id="matching" data-lock-message="Complete Task 3 before moving on.">
+      <h2>Task 4: Match Keywords to Definitions</h2>
+      <p>Select the correct definition letter for each keyword.</p>
+      <div class="grid">
+        <div class="tile"><strong>A</strong>Information about people, events or things that a computer can use.</div>
+        <div class="tile"><strong>B</strong>False or misleading information spread by text, image, audio or video.</div>
+        <div class="tile"><strong>C</strong>A step-by-step set of instructions or rules.</div>
+        <div class="tile"><strong>D</strong>When an AI gives an answer that sounds real but is incorrect or invented.</div>
+        <div class="tile"><strong>E</strong>Protecting personal information and controlling who can see it.</div>
+        <div class="tile"><strong>F</strong>An unfair result or pattern that favours one group or idea over another.</div>
+      </div>
+      <div id="matchingRows"></div>
+      <button onclick="checkMatching()">Check Matching</button>
+      <button class="ghost" onclick="toggleAnswers('matchingAnswers')">Reveal Answers</button>
+      <div class="feedback" id="matchingFeedback"></div>
+      <div class="answers" id="matchingAnswers">1-C, 2-A, 3-F, 4-E, 5-B, 6-D</div>
+    </section>
+
+    <section id="activity3" data-lock-message="Complete the matching task before moving on.">
+      <h2>Task 5: Benefits, Risks, or Depends?</h2>
+      <p>Answer all 10 questions. Decide whether each situation is a benefit, a risk, or depends on how AI is used.</p>
+      <div id="activity3Rows"></div>
+      <button onclick="checkActivity3()">Check Task 5 Score</button>
+      <button class="ghost" onclick="resetActivity3()">Reset Task 5</button>
+      <button class="ghost" onclick="toggleAnswers('activity3Answers')">Reveal Teacher Guidance</button>
+      <div class="feedback" id="activity3Feedback"></div>
+      <div class="answers" id="activity3Answers">
+        <p><strong>Gold:</strong> 9-10/10 - secure understanding of benefits, risks and depends.</p>
+        <p><strong>Silver:</strong> 6-8/10 - good understanding; review the examples you missed.</p>
+        <p><strong>Bronze:</strong> 0-5/10 - revisit privacy, bias, misinformation, hallucination and human checking.</p>
+      </div>
+    </section>
+
+    <section id="exit" data-lock-message="Complete Task 5 before moving on.">
+      <h2>Task 6: Exit Ticket</h2>
+      <div class="question">
+        <label>One benefit of AI is...</label>
+        <input type="text" id="exitBenefit" />
+      </div>
+      <div class="question">
+        <label>One risk of AI is...</label>
+        <input type="text" id="exitRisk" />
+      </div>
+      <div class="question">
+        <label>One responsible AI rule I will remember is...</label>
+        <input type="text" id="exitRule" />
+      </div>
+
+      <div class="question">
+        <p>Complete these final true/false checks before submitting.</p>
+        <div class="scenario">
+          <strong>AI is always correct.</strong>
+          <div class="segmented">
+            <label><input type="radio" name="exitMisconception0" value="True">True</label>
+            <label><input type="radio" name="exitMisconception0" value="False">False</label>
+          </div>
+        </div>
+        <div class="scenario">
+          <strong>AI can be biased if its data is unfair.</strong>
+          <div class="segmented">
+            <label><input type="radio" name="exitMisconception1" value="True">True</label>
+            <label><input type="radio" name="exitMisconception1" value="False">False</label>
+          </div>
+        </div>
+        <div class="scenario">
+          <strong>You should share private information if an AI asks.</strong>
+          <div class="segmented">
+            <label><input type="radio" name="exitMisconception2" value="True">True</label>
+            <label><input type="radio" name="exitMisconception2" value="False">False</label>
+          </div>
+        </div>
+      </div>
+      <button onclick="checkExit()">Submit Exit Ticket</button>
+      <button class="ghost" onclick="downloadResponses()">Download Responses</button>
+      <div class="feedback" id="exitFeedback"></div>
+    </section>
+  </main>
+
+  <script>
+    const progressOrder = ["donow", "reading", "cloze", "matching", "activity3", "exit"];
+    const progressLabels = {
+      donow: "Task 1: Do Now",
+      reading: "Task 2: Reading",
+      cloze: "Task 3: Fill in the Missing Blanks",
+      matching: "Task 4: Matching",
+      activity3: "Task 5",
+      exit: "Task 6: Exit Ticket"
+    };
+
+    function getProgressIndex() {
+      return Number(localStorage.getItem("aiLessonProgressIndex") || "0");
+    }
+
+    function setProgressIndex(index) {
+      const nextIndex = Math.max(getProgressIndex(), index);
+      localStorage.setItem("aiLessonProgressIndex", String(nextIndex));
+      applyProgressLocks();
+    }
+
+    function unlockNext(currentId) {
+      const index = progressOrder.indexOf(currentId);
+      if (index >= 0) setProgressIndex(index + 1);
+    }
+
+    function isUnlocked(sectionId) {
+      if (sectionId === "overview") return true;
+      const index = progressOrder.indexOf(sectionId);
+      return index === -1 || index <= getProgressIndex();
+    }
+
+
+    function updateProgressBar() {
+      const completed = Math.min(getProgressIndex(), progressOrder.length);
+      const percent = Math.round((completed / progressOrder.length) * 100);
+      const fill = document.getElementById("lessonProgressFill");
+      const label = document.getElementById("lessonProgressText");
+      if (fill) fill.style.width = `${percent}%`;
+      if (label) label.textContent = `${percent}%`;
+    }
+    function applyProgressLocks() {
+      document.querySelectorAll("main section").forEach(section => {
+        if (isUnlocked(section.id)) section.classList.remove("locked");
+        else section.classList.add("locked");
+      });
+      updateProgressBar();
+      document.querySelectorAll("nav a[href^='#']").forEach(link => {
+        const targetId = link.getAttribute("href").slice(1);
+        const unlocked = isUnlocked(targetId);
+        link.classList.toggle("locked-link", !unlocked);
+        link.setAttribute("aria-disabled", unlocked ? "false" : "true");
+        link.title = unlocked ? "" : `Complete ${progressLabels[progressOrder[getProgressIndex()]] || "the previous task"} first.`;
+      });
+    }
+
+    document.addEventListener("click", event => {
+      const link = event.target.closest("nav a[href^='#']");
+      if (!link) return;
+      const targetId = link.getAttribute("href").slice(1);
+      if (!isUnlocked(targetId)) {
+        event.preventDefault();
+        alert(`Complete ${progressLabels[progressOrder[getProgressIndex()]] || "the previous task"} before moving on.`);
+      }
+    });
+    const doNowItems = [
+      ["AI stands for...", ["Automatic Internet", "Artificial Intelligence", "Amazing Information"], "Artificial Intelligence"],
+      ["Which one is most likely to use AI?", ["A chatbot", "A wooden pencil", "A plain light switch"], "A chatbot"],
+      ["Data means...", ["Information a computer can use", "A computer screen", "A school password"], "Information a computer can use"],
+      ["An algorithm is...", ["A step-by-step set of rules", "A type of keyboard", "A fake image"], "A step-by-step set of rules"],
+      ["A benefit of AI could be...", ["Saving time", "Always being correct", "Never needing humans"], "Saving time"],
+      ["A risk of AI could be...", ["Misinformation", "Better spelling", "Faster translation"], "Misinformation"],
+      ["Privacy means...", ["Protecting personal information", "Making text bigger", "Choosing a username colour"], "Protecting personal information"],
+      ["Bias means...", ["An unfair pattern or result", "A quick answer", "A maths formula"], "An unfair pattern or result"],
+      ["An AI hallucination is...", ["A confident but false answer", "A video game", "A safe password"], "A confident but false answer"],
+      ["Responsible AI use means...", ["Checking outputs before trusting them", "Copying everything", "Sharing private details"], "Checking outputs before trusting them"]
+    ];
+
+    function renderDoNow() {
+      const wrap = document.getElementById("doNow");
+      doNowItems.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "scenario";
+        div.innerHTML = `<strong>${i + 1}. ${item[0]}</strong>
+          <div class="segmented">
+            ${item[1].map(option => `<label><input type="radio" name="donow${i}" value="${option}">${option}</label>`).join("")}
+          </div>`;
+        wrap.appendChild(div);
+      });
+      if (localStorage.getItem("aiLessonDoNowSubmitted") === "true") {
+        lockDoNow("This Do Now has already been submitted on this device.");
+      }
+    }
+
+    function selectedRadio(name) {
+      const picked = document.querySelector(`input[name="${name}"]:checked`);
+      return picked ? picked.value : "";
+    }
+
+    function showFeedback(id, text, good) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = `feedback show ${good ? "good" : "warn"}`;
+    }
+
+    function lockDoNow(message) {
+      doNowItems.forEach((_, i) => {
+        document.querySelectorAll(`input[name="donow${i}"]`).forEach(input => input.disabled = true);
+      });
+      document.getElementById("doNowButton").disabled = true;
+      if (message) showFeedback("doNowFeedback", message, false);
+    }
+
+    function checkDoNow() {
+      const unanswered = doNowItems.some((_, i) => !selectedRadio(`donow${i}`));
+      if (unanswered) {
+        showFeedback("doNowFeedback", "Answer all 10 questions before submitting. You only get one attempt.", false);
+        return;
+      }
+      let score = 0;
+      doNowItems.forEach((item, i) => {
+        if (selectedRadio(`donow${i}`) === item[2]) score++;
+      });
+      localStorage.setItem("aiLessonDoNowSubmitted", "true");
+      unlockNext("donow");
+      lockDoNow("");
+      const answers = document.getElementById("doNowAnswers");
+      answers.innerHTML = `<strong>Answers:</strong><ol>${doNowItems.map((item, i) => `<li>${item[2]}</li>`).join("")}</ol>`;
+      answers.classList.add("visible");
+      showFeedback("doNowFeedback", `One attempt submitted. Score: ${score}/10.`, score >= 7);
+    }
+
+    const readingQs = [
+      "What does AI stand for?",
+      "Name two tasks AI systems can do.",
+      "Why does the quality of data matter?",
+      "What does hallucination mean when talking about AI?",
+      "Write one rule for responsible AI use in school."
+    ];
+
+    const supportReadingQs = [
+      "What does AI stand for?",
+      "Name one thing AI can do.",
+      "How can AI help students?",
+      "Name one risk of AI.",
+      "What should students do before trusting AI?"
+    ];
+
+    function renderQuestionInputs(containerId, questions, prefix) {
+      const wrap = document.getElementById(containerId);
+      questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<label>${i + 1}. ${q}</label><input type="text" id="${prefix}${i}">`;
+        wrap.appendChild(div);
+      });
+    }
+
+    function updateReadingReveal(prefix, questions, buttonId) {
+      const complete = questions.every((_, i) => document.getElementById(`${prefix}${i}`).value.trim().length > 3);
+      document.getElementById(buttonId).classList.toggle("hidden-until-complete", !complete);
+      return complete;
+    }
+
+    function attachReadingRevealListeners(prefix, questions, buttonId) {
+      questions.forEach((_, i) => {
+        document.getElementById(`${prefix}${i}`).addEventListener("input", () => updateReadingReveal(prefix, questions, buttonId));
+      });
+      updateReadingReveal(prefix, questions, buttonId);
+    }
+
+    function checkQuestionSet(questions, prefix, feedbackId) {
+      const filled = questions.filter((_, i) => document.getElementById(`${prefix}${i}`).value.trim().length > 3).length;
+      const complete = filled === questions.length;
+      showFeedback(feedbackId, `${filled}/${questions.length} answered. Use the suggested answers for self or peer assessment.`, complete);
+      if (prefix === "rq") updateReadingReveal(prefix, questions, "readingRevealButton");
+      if (prefix === "srq") updateReadingReveal(prefix, questions, "supportReadingRevealButton");
+      if (complete && (prefix === "rq" || prefix === "srq")) unlockNext("reading");
+    }
+
+    function checkReading() {
+      checkQuestionSet(readingQs, "rq", "readingFeedback");
+    }
+
+    function checkSupportReading() {
+      checkQuestionSet(supportReadingQs, "srq", "supportReadingFeedback");
+    }
+
+    function checkCloze(kind) {
+      const selector = kind === "challenge" ? ".cloze-challenge" : ".cloze-guided";
+      const feedbackId = kind === "challenge" ? "clozeChallengeFeedback" : "clozeGuidedFeedback";
+      const inputs = [...document.querySelectorAll(selector)];
+      let score = 0;
+      inputs.forEach(input => {
+        const correct = input.value.trim().toLowerCase() === input.dataset.answer;
+        input.style.borderColor = correct ? "#198754" : "#bb2d3b";
+        input.style.background = correct ? "#e8f4ee" : "#fff1f1";
+        if (correct) score++;
+      });
+      const complete = score === inputs.length;
+      showFeedback(feedbackId, `Score: ${score}/${inputs.length}. Green blanks are correct; red blanks need another look.`, complete);
+      if (complete) unlockNext("cloze");
+    }
+
+    function resetCloze(kind) {
+      const selector = kind === "challenge" ? ".cloze-challenge" : ".cloze-guided";
+      const feedbackId = kind === "challenge" ? "clozeChallengeFeedback" : "clozeGuidedFeedback";
+      document.querySelectorAll(selector).forEach(input => {
+        input.value = "";
+        input.style.borderColor = "";
+        input.style.background = "";
+      });
+      document.getElementById(feedbackId).className = "feedback";
+    }
+
+    const matches = [
+      ["1. Algorithm", "C"],
+      ["2. Data", "A"],
+      ["3. Bias", "F"],
+      ["4. Privacy", "E"],
+      ["5. Misinformation", "B"],
+      ["6. Hallucination", "D"]
+    ];
+
+    function renderMatching() {
+      const wrap = document.getElementById("matchingRows");
+      matches.forEach((row, i) => {
+        const div = document.createElement("div");
+        div.className = "match-row";
+        div.innerHTML = `<label for="match${i}"><strong>${row[0]}</strong></label>
+          <select id="match${i}">
+            <option value="">Choose</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+          </select>`;
+        wrap.appendChild(div);
+      });
+    }
+
+    function checkMatching() {
+      let score = 0;
+      matches.forEach((row, i) => {
+        const el = document.getElementById(`match${i}`);
+        const correct = el.value === row[1];
+        el.style.borderColor = correct ? "#198754" : "#bb2d3b";
+        if (correct) score++;
+      });
+      const complete = score === matches.length;
+      showFeedback("matchingFeedback", `Score: ${score}/${matches.length}.`, complete);
+      if (complete) unlockNext("matching");
+    }
+
+    const activity3Items = [
+      { prompt: "A student asks AI to explain photosynthesis in simpler words, then checks their notes.", answer: "Benefit", guidance: "Benefit: it can support understanding when checked." },
+      { prompt: "A company uses AI to choose job interviews without checking for bias.", answer: "Risk", guidance: "Risk: unfair data or bias could affect people." },
+      { prompt: "A teacher uses AI to draft quiz questions, then edits and checks them.", answer: "Depends", guidance: "Depends: useful if a human checks accuracy and fairness." },
+      { prompt: "Someone shares an AI-generated image of a local event as if it is real.", answer: "Risk", guidance: "Risk: this can spread misinformation." },
+      { prompt: "A hospital uses AI to spot patterns in scans, with doctors making final decisions.", answer: "Depends", guidance: "Depends: helpful with expert human oversight." },
+      { prompt: "An AI answer sounds confident, but no one checks whether it is true.", answer: "Risk", guidance: "Risk: it could be a hallucination." },
+      { prompt: "A chatbot asks for a student’s full name, address and password.", answer: "Risk", guidance: "Risk: personal information and privacy must be protected." },
+      { prompt: "AI translates instructions so a new student can understand the task.", answer: "Benefit", guidance: "Benefit: it can improve access and understanding." },
+      { prompt: "A student uses AI to plan revision, then improves the plan using class notes.", answer: "Benefit", guidance: "Benefit: it supports learning while the student still thinks." },
+      { prompt: "A student submits an AI-written paragraph as if it is completely their own work.", answer: "Risk", guidance: "Risk: this is not honest or responsible use." }
+    ];
+
+    function renderActivity3() {
+      const wrap = document.getElementById("activity3Rows");
+      activity3Items.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "scenario";
+        div.innerHTML = `<strong>${i + 1}. ${item.prompt}</strong>
+          <div class="segmented">
+            <label><input type="radio" name="activity3${i}" value="Benefit">Benefit</label>
+            <label><input type="radio" name="activity3${i}" value="Risk">Risk</label>
+            <label><input type="radio" name="activity3${i}" value="Depends">Depends</label>
+          </div>
+          <input type="text" id="activity3Reason${i}" placeholder="Reason or safeguard...">`;
+        wrap.appendChild(div);
+      });
+    }
+
+    function checkActivity3() {
+      let score = 0;
+      let completedReasons = 0;
+      activity3Items.forEach((item, i) => {
+        if (selectedRadio(`activity3${i}`) === item.answer) score++;
+        if (document.getElementById(`activity3Reason${i}`).value.trim().length > 4) completedReasons++;
+      });
+      const level = score >= 9 ? "Gold" : score >= 6 ? "Silver" : "Bronze";
+      const message = `${level} score: ${score}/10. Reasons completed: ${completedReasons}/10.`;
+      const answers = document.getElementById("activity3Answers");
+      answers.innerHTML = `<p><strong>${level}:</strong> ${score}/10.</p><ol>${activity3Items.map(item => `<li>${item.guidance}</li>`).join("")}</ol>`;
+      answers.classList.add("visible");
+      const complete = activity3Items.every((_, i) => selectedRadio(`activity3${i}`));
+      showFeedback("activity3Feedback", message, score >= 6 && completedReasons >= 8);
+      if (complete) unlockNext("activity3");
+    }
+
+    function resetActivity3() {
+      activity3Items.forEach((_, i) => {
+        document.querySelectorAll(`input[name="activity3${i}"]`).forEach(input => input.checked = false);
+        document.getElementById(`activity3Reason${i}`).value = "";
+      });
+      document.getElementById("activity3Feedback").className = "feedback";
+      document.getElementById("activity3Answers").classList.remove("visible");
+    }
+
+    const misconceptionAnswers = ["False", "True", "False"];
+
+    function scoreMisconceptions(prefix) {
+      let answered = 0;
+      let score = 0;
+      misconceptionAnswers.forEach((answer, i) => {
+        const selected = selectedRadio(`${prefix}${i}`);
+        if (selected) answered++;
+        if (selected === answer) score++;
+      });
+      return { answered, score, total: misconceptionAnswers.length };
+    }
+    function checkExit() {
+      const ids = ["exitBenefit", "exitRisk", "exitRule"];
+      const writtenComplete = ids.filter(id => document.getElementById(id).value.trim().length > 3).length;
+      const misconceptionResult = scoreMisconceptions("exitMisconception");
+      const complete = writtenComplete === 3 && misconceptionResult.answered === misconceptionResult.total;
+      const misconceptionText = misconceptionResult.answered === misconceptionResult.total ? ` Misconception score: ${misconceptionResult.score}/${misconceptionResult.total}.` : " Complete the final misconception check.";
+      showFeedback("exitFeedback", `${writtenComplete}/3 written responses completed.${misconceptionText}`, complete);
+    }
+
+    function toggleAnswers(id) {
+      document.getElementById(id).classList.toggle("visible");
+    }
+
+    function downloadResponses() {
+      const lines = [
+        "Moor End Academy - Year 8 AI Lesson Responses",
+        "",
+        "Do Now submitted: " + (localStorage.getItem("aiLessonDoNowSubmitted") === "true" ? "yes" : "no"),
+        "",
+        "Reading Check:",
+        ...readingQs.map((q, i) => `${i + 1}. ${q} ${document.getElementById(`rq${i}`).value}`),
+        "",
+        "Supported Reading Check:",
+        ...supportReadingQs.map((q, i) => `${i + 1}. ${q} ${document.getElementById(`srq${i}`).value}`),
+        "",
+        "Task 5:"
+        `Score feedback: ${document.getElementById("activity3Feedback").textContent}`,
+        "",
+        "Exit Ticket:",
+        `Benefit: ${document.getElementById("exitBenefit").value}`,
+        `Risk: ${document.getElementById("exitRisk").value}`,
+        `Rule: ${document.getElementById("exitRule").value}`,
+        `Final misconception score: ${scoreMisconceptions("exitMisconception").score}/3`
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "year8-ai-lesson-responses.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    renderDoNow();
+    renderQuestionInputs("readingQuestions", readingQs, "rq");
+    renderQuestionInputs("supportReadingQuestions", supportReadingQs, "srq");
+    attachReadingRevealListeners("rq", readingQs, "readingRevealButton");
+    attachReadingRevealListeners("srq", supportReadingQs, "supportReadingRevealButton");
+    renderMatching();
+    renderActivity3();
+    applyProgressLocks();
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
